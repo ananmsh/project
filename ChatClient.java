@@ -13,6 +13,7 @@ public class ChatClient extends AbstractClient
   ArrayList<String> PlacesNames;
   ArrayList<String> cityNames;
   ArrayList<String> cityReport;
+  boolean LoginAnswer;
 /////////////////////////////////////////////////getters&setters//////////////////////////////////  
   public ArrayList<String> getCityNames() {
 	return cityNames;
@@ -20,6 +21,12 @@ public class ChatClient extends AbstractClient
 
 public void setCityNames(ArrayList<String> cityNames) {
 	this.cityNames = cityNames;
+}
+public void setLoginAnswer(boolean Answer) {
+	this.LoginAnswer = Answer;
+	}
+public boolean getLoginAnswer() {
+	return LoginAnswer;
 }
 
 public ArrayList<String> getCityReport() {
@@ -66,6 +73,15 @@ public void handleMessageFromServer(Object obj)
 	{
 		((ArrayList<String>)obj).remove(0);
 		setCityReport((ArrayList<String>)obj);
+	}
+	else if(((ArrayList<String>)obj).get(0).equals("LoginAnswer"))
+	{
+		((ArrayList<String>)obj).remove(0);
+		if(((ArrayList<String>)obj).get(0).equals("LogSuccesfull")) 
+			setLoginAnswer(true);
+		else if(((ArrayList<String>)obj).get(0).equals("LogFailed"))
+			setLoginAnswer(false);
+
 	}
 	 
   }
