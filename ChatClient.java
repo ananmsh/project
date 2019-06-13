@@ -13,20 +13,23 @@ public class ChatClient extends AbstractClient
   ArrayList<String> PlacesNames;
   ArrayList<String> cityNames;
   ArrayList<String> cityReport;
-  boolean LoginAnswer;
+  ArrayList<String> MapsNames;
+  
 /////////////////////////////////////////////////getters&setters//////////////////////////////////  
   public ArrayList<String> getCityNames() {
 	return cityNames;
 }
 
+public ArrayList<String> getMapsNames() {
+	return MapsNames;
+}
+
+public void setMapsNames(ArrayList<String> mapsNames) {
+	MapsNames = mapsNames;
+}
+
 public void setCityNames(ArrayList<String> cityNames) {
 	this.cityNames = cityNames;
-}
-public void setLoginAnswer(boolean Answer) {
-	this.LoginAnswer = Answer;
-	}
-public boolean getLoginAnswer() {
-	return LoginAnswer;
 }
 
 public ArrayList<String> getCityReport() {
@@ -45,6 +48,7 @@ public ChatClient(String host, int port, ChatIF clientUI)  throws IOException
     PlacesNames=new ArrayList<String>();
     cityNames=new ArrayList<String>();
     cityReport=new ArrayList<String>();
+    MapsNames=new ArrayList<String>();
   }
 
   public ArrayList<String> getPlacesNames() {
@@ -68,20 +72,17 @@ public void handleMessageFromServer(Object obj)
 	{
 		((ArrayList<String>)obj).remove(0);
 		setCityNames((ArrayList<String>)obj);
+		
 	}
 	else if(((ArrayList<String>)obj).get(0).equals("ReportNames"))
 	{
 		((ArrayList<String>)obj).remove(0);
 		setCityReport((ArrayList<String>)obj);
 	}
-	else if(((ArrayList<String>)obj).get(0).equals("LoginAnswer"))
+	else if(((ArrayList<String>)obj).get(0).equals("MapsNames"))
 	{
 		((ArrayList<String>)obj).remove(0);
-		if(((ArrayList<String>)obj).get(0).equals("LogSuccesfull")) 
-			setLoginAnswer(true);
-		else if(((ArrayList<String>)obj).get(0).equals("LogFailed"))
-			setLoginAnswer(false);
-
+		setMapsNames((ArrayList<String>)obj);
 	}
 	 
   }
@@ -95,9 +96,9 @@ public void handleMessageFromServer(Object obj)
   }
   
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////// 
-  public void ReportForCity(ArrayList<String> CityReport) throws IOException
+  public void StringsToServer(ArrayList<String> strings) throws IOException
   {
-	  sendToServer(CityReport);
+	  sendToServer(strings);
 	  
   }
   //////////////////////////////////////////////////////////////////////////////////////////////////////
