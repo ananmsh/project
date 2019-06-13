@@ -70,7 +70,7 @@ public class CatalogGui {
 
     @FXML
     private Label PlaceLbl;
-
+///////////////////////////////////////////////////////////////////////////////////////////
     @FXML
     void CityListFunc(MouseEvent event) {
     	if(CityList.getSelectionModel().getSelectedItem()!=null)
@@ -97,6 +97,7 @@ public class CatalogGui {
          MapList.setItems(list);	
     	}
     }
+    //////////////////////////////////////////////////////////////////////////////////////////////
     @FXML
     void PlaceRadioBtn(ActionEvent event) {
 
@@ -118,13 +119,13 @@ public class CatalogGui {
 
     }
     
-
+///////////////////////////////////////////////////////////////////////////////////////////////
     @FXML
     void LogInButton(ActionEvent event) {
 
     	
     }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @FXML
     void MapListFunc(MouseEvent event) {
      	if(MapList.getSelectionModel().getSelectedItem()!=null)
@@ -216,7 +217,6 @@ public class CatalogGui {
 	         ArrayList<String> CitytoServer= new ArrayList<String>();
 	       	CitytoServer.add("GetCityForCatalogList");
 	    	CitytoServer.add(Main.getClient().getClient().getMapsNames().get(0));
-	    	System.out.println(Main.getClient().getClient().getMapsNames().get(0));
 	    	try {
 	         	Main.getClient().getClient().StringsToServer(CitytoServer);
 	         } catch (IOException e1) {
@@ -236,10 +236,33 @@ public class CatalogGui {
     	}
     	else if(DescriptionRadio.isSelected())
     	{
+    		CityList.setItems(null);
+    		PlaceList.setItems(null);
+    		ArrayList<String> DescriptiontoFindMap= new ArrayList<String>();
+    		DescriptiontoFindMap.add("DescriptionToFindMap");
+    		DescriptiontoFindMap.add((String)SearchTxt.getText());
+    		try {
+	         	Main.getClient().getClient().StringsToServer(DescriptiontoFindMap);
+	         } catch (IOException e1) {
+	         	// TODO Auto-generated catch block
+	         	e1.printStackTrace();
+	         }//incase the job is to get city names for combobox
+	    	  try {
+	        		Thread.currentThread().sleep(200);
+	        	} catch (InterruptedException e) {
+	        		// TODO Auto-generated catch block
+	        		e.printStackTrace();
+	        	}
+    		  
+	    	  ObservableList<String> list2;  
+		         list2 = FXCollections.observableArrayList(Main.getClient().getClient().getMapsNames());
+		         MapList.setItems(list2);
     		
     	}	
     	
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @FXML
     void initialize() {
