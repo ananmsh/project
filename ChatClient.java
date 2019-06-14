@@ -1,11 +1,12 @@
 package application;
 
-
 import ocsf.client.*;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
-
 import entities.Customer;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class ChatClient extends AbstractClient
 {
@@ -14,8 +15,26 @@ public class ChatClient extends AbstractClient
   ArrayList<String> cityNames;
   ArrayList<String> cityReport;
   ArrayList<String> MapsNames;
+  Image image;
+  String s;
   
 /////////////////////////////////////////////////getters&setters//////////////////////////////////  
+public String getS() {
+	return s;
+}
+
+public void setS(String s) {
+	this.s = s;
+}
+
+public Image getImage() {
+	return image;
+}
+
+public void setImage(Image image) {
+	this.image = image;
+}
+
   public ArrayList<String> getCityNames() {
 	return cityNames;
 }
@@ -49,6 +68,8 @@ public ChatClient(String host, int port, ChatIF clientUI)  throws IOException
     cityNames=new ArrayList<String>();
     cityReport=new ArrayList<String>();
     MapsNames=new ArrayList<String>();
+    image=null;
+    s= new String();
   }
 
   public ArrayList<String> getPlacesNames() {
@@ -63,7 +84,28 @@ public void setPlacesNames(ArrayList<String> placesNames) {
 
 public void handleMessageFromServer(Object obj) 
   {
-	if(((ArrayList<String>)obj).get(0).equals("PlacesNames")) 
+  	if(obj instanceof MyFile)
+		{
+		 MyFile file;
+		  int fileSize =((MyFile)obj).getSize(); 
+		  file=new MyFile(((MyFile)obj).getFileName());
+		  File picfile=new File("src\\Images\\"+file.getFileName());
+		  try { 
+			  FileOutputStream fos = new FileOutputStream(picfile);
+			   try {
+				fos.write(((MyFile)obj).getMybytearray());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    		FileInputStream input = new FileInputStream(picfile);
+			    image= new Image(input);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+		     		e.printStackTrace();
+		    	}		
+		}
+	else if(((ArrayList<String>)obj).get(0).equals("PlacesNames")) 
 	{
 		((ArrayList<String>)obj).remove(0);
 		setPlacesNames((ArrayList<String>)obj);
