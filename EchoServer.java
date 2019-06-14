@@ -9,7 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
+import com.sun.javafx.image.impl.ByteIndexed.Getter;
+import com.sun.javafx.tk.Toolkit;
 import com.mysql.cj.protocol.a.MysqlBinaryValueDecoder;
 
 import entities.City;
@@ -18,10 +19,11 @@ import entities.Map;
 import entities.Place;
 import entities.Tour;
 import ocsf.server.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class EchoServer extends AbstractServer 
 {
-
   final public static int DEFAULT_PORT = 5555;
   static Connection con1;
   ResultSet rs ;
@@ -121,14 +123,66 @@ public class EchoServer extends AbstractServer
 					}
 					 
 				 }
-				 
-
-	 
-	 
+				 else if(((ArrayList<String>)obj).get(0).equals("GetImageForMap"))
+				 {
+					 try {
+							GetImageForMap(obj, client);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				 }	 
 
   }
   
-  
+  private void GetImageForMap(Object obj,ConnectionToClient client) throws IOException
+  {
+	 File file=null;
+	 MyFile msg;
+	  PreparedStatement stmt2;
+		try {
+			stmt2 = con1.prepareStatement("SELECT mapImage FROM project.map WHERE Name=?");
+			stmt2.setString(1,((ArrayList<String>)obj).get(1));
+		    rs=stmt2.executeQuery();
+		  
+		    if(rs.next())
+		    {
+		    	InputStream input= rs.getBinaryStream(1);
+		    	  byte[] buffer= new byte[1024]; 	 
+			      file=new File("src\\Images\\k.jpg");
+			      OutputStream output= new FileOutputStream(file);
+			      int size=0;
+		    	  while((size=input.read(buffer))!=-1)
+		    	  {
+		    		  output.write(buffer, 0, size);
+		    	  }
+		    	  msg=new MyFile("k.jpg");
+			      FileInputStream fis = new FileInputStream(file);
+			      byte[] bufferPic= new byte[(int)file.length()]; 
+		    	  BufferedInputStream bis = new BufferedInputStream(fis);	
+		    	  msg.initArray(bufferPic.length);
+		          msg.setSize(bufferPic.length);
+		    	  bis.read(msg.getMybytearray(),0,bufferPic.length);
+		    	
+		    	try {
+		    		
+					client.sendToClient(msg);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		   }
+		   // String localUrl=file.toURI().toURL().toString();
+		   /* FileInputStream imageInput= new FileInputStream(file);
+		     // String localUrl=file.toURI().toURL().toString();
+		      Image image = new Image(imageInput);*/
+			
+		
+		 } catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	  
+  }
   
   private void GetMapWithDescription(Object obj,ConnectionToClient client) throws IOException
   {
@@ -163,12 +217,7 @@ public class EchoServer extends AbstractServer
 		 } catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-
-
-
-	  
-	  
+			}	  
   }
   
   private void GetMapsForCatalogSearch(Object obj,ConnectionToClient client) throws IOException
