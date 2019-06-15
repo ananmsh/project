@@ -17,7 +17,15 @@ public class ChatClient extends AbstractClient
   ArrayList<String> MapsNames;
   Image image;
   String s;
- boolean LoginAnswer;
+String LoginAnswer;
+  
+public String getLoginAnswer() {
+	return LoginAnswer;
+}
+
+public void setLoginAnswer(String loginAnswer) {
+	LoginAnswer = loginAnswer;
+}
 /////////////////////////////////////////////////getters&setters//////////////////////////////////  
 public String getS() {
 	return s;
@@ -132,14 +140,19 @@ public void handleMessageFromServer(Object obj)
 		((ArrayList<String>)obj).remove(0);
 		setMapsNames((ArrayList<String>)obj);
 	}
-		else if(((ArrayList<String>)obj).get(0).equals("LoginAnswer"))
+	else if(((ArrayList<String>)obj).get(0).equals("LoginAnswer"))
 	{
 		((ArrayList<String>)obj).remove(0);
-		if(((ArrayList<String>)obj).get(0).equals("LogSuccesfull")) 
-			setLoginAnswer(true);
+		if(((ArrayList<String>)obj).get(0).equals("LogCustomer")) 
+			{
+			setLoginAnswer("Customer");
+			}
+		else if (((ArrayList<String>)obj).get(0).equals("LogEmployee")) 
+		{
+		setLoginAnswer("Employee");
+		}
 		else if(((ArrayList<String>)obj).get(0).equals("LogFailed"))
-			setLoginAnswer(false);
-
+			setLoginAnswer("Failed");
 	}
 	 
   }
