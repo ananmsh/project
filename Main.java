@@ -14,7 +14,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		setClient(new ClientConsole("localhost", 5555));
 		try {
-			Pane root = FXMLLoader.load(getClass().getResource("/Fxml/AddTour.fxml"));//build the gui
+			Pane root = FXMLLoader.load(getClass().getResource("/Fxml/Catalog.fxml"));//build the gui
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
