@@ -132,6 +132,17 @@ public class EchoServer extends AbstractServer
 							e.printStackTrace();
 						}
 				 }	 
+				 	 else if(((ArrayList<String>)obj).get(0).equals("LoginCheck"))
+				 {
+					 try {
+						 CheckLogin(obj,client);
+					} 
+					 catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					 
+				 }
 
   }
   
@@ -301,7 +312,34 @@ public class EchoServer extends AbstractServer
 			}
   }
 	  
-  
+  private void CheckLogin(Object obj, ConnectionToClient client) throws SQLException
+  {
+      String sql = "SELECT * FROM customer WHERE id = ? and password = ?";
+      try{
+    	  PreparedStatement stmt3 = con1.prepareStatement(sql);
+          stmt3.setString(1, ((ArrayList<String>)obj).get(1));
+          stmt3.setString(2, ((ArrayList<String>)obj).get(2));
+          rs = stmt3.executeQuery();
+          ArrayList<String> answer=new ArrayList<String>();
+          answer.add("LoginAnswer");
+          rs.beforeFirst();
+          rs.beforeFirst();
+          if(!rs.next())
+          {
+        	  answer.add("LogFailed");
+        	  client.sendToClient(answer);
+          }
+          else
+          {
+        	  answer.add("LogSuccesfull");
+        	  client.sendToClient(answer);
+          }
+      }
+      catch(Exception e){
+          e.printStackTrace();
+      }
+	
+}
   public void GetMapList(Object obj,ConnectionToClient client)
   {
 		PreparedStatement stmt2;
