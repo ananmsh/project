@@ -123,6 +123,19 @@ public class CatalogGui {
     @FXML
     void LogInButton(ActionEvent event) {
 
+		try {
+			((Node) event.getSource()).getScene().getWindow().hide(); 
+			Pane root = FXMLLoader.load(getClass().getResource("/Fxml/Login.fxml"));//build the gui
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.show();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
     	
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -267,7 +280,10 @@ public class CatalogGui {
     @FXML
     void initialize() {
         assert GcmImage != null : "fx:id=\"GcmImage\" was not injected: check your FXML file 'Catalog.fxml'.";
-        assert SearchTxt != null : "fx:id=\"SearchTxt\" was not injected: check your FXML file 'Catalog.fxml'.";
+        Image logo= new Image(getClass().getResourceAsStream("/Images/Logo.png"));
+	GcmImage.setImage(logo);
+		
+	assert SearchTxt != null : "fx:id=\"SearchTxt\" was not injected: check your FXML file 'Catalog.fxml'.";
         assert CityRadio != null : "fx:id=\"CityRadio\" was not injected: check your FXML file 'Catalog.fxml'.";
         assert PlaceRadio != null : "fx:id=\"PlaceRadio\" was not injected: check your FXML file 'Catalog.fxml'.";
         assert DescriptionRadio != null : "fx:id=\"DescriptionRadio\" was not injected: check your FXML file 'Catalog.fxml'.";
