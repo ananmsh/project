@@ -11,18 +11,18 @@
 
 <AnchorPane prefHeight="540.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.CatalogGui">
    <children>
-      <ImageView id="GcmImage" fx:id="GcmImage" fitHeight="83.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true" />
-      <TextField id="SearchTxt" fx:id="SearchTxt" layoutX="115.0" layoutY="83.0" prefHeight="26.0" prefWidth="365.0" />
-      <RadioButton id="CityRadio" fx:id="CityRadio" layoutX="115.0" layoutY="121.0" mnemonicParsing="false" onAction="#CityRadioBtn" text="City" />
-      <RadioButton id="PlaceRadio" fx:id="PlaceRadio" layoutX="254.0" layoutY="121.0" mnemonicParsing="false" onAction="#PlaceRadioBtn" text="Place" />
-      <RadioButton id="DescriptionRadio" fx:id="DescriptionRadio" layoutX="390.0" layoutY="121.0" mnemonicParsing="false" onAction="#DescriptionRadioBtn" text="Description" />
-      <Label id="WelcomeLBL" fx:id="WelcomeLBL" layoutX="177.0" layoutY="33.0" text="WELCOME TO GCM">
+      <ImageView id="GcmImage" fx:id="GcmImage" fitHeight="88.0" fitWidth="189.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField id="SearchTxt" fx:id="SearchTxt" layoutX="135.0" layoutY="107.0" prefHeight="26.0" prefWidth="365.0" />
+      <RadioButton id="CityRadio" fx:id="CityRadio" layoutX="135.0" layoutY="145.0" mnemonicParsing="false" onAction="#CityRadioBtn" text="City" />
+      <RadioButton id="PlaceRadio" fx:id="PlaceRadio" layoutX="274.0" layoutY="145.0" mnemonicParsing="false" onAction="#PlaceRadioBtn" text="Place" />
+      <RadioButton id="DescriptionRadio" fx:id="DescriptionRadio" layoutX="410.0" layoutY="145.0" mnemonicParsing="false" onAction="#DescriptionRadioBtn" text="Description" />
+      <Label id="WelcomeLBL" fx:id="WelcomeLBL" layoutX="197.0" layoutY="57.0" text="WELCOME TO GCM">
          <font>
             <Font name="System Bold Italic" size="25.0" />
          </font>
       </Label>
       <Button id="LogInBtn" fx:id="LogInBtn" layoutX="596.0" layoutY="26.0" mnemonicParsing="false" onAction="#LogInButton" text="LogIn" />
-      <Button id="SearchBtn" fx:id="SearchBtn" alignment="TOP_LEFT" layoutX="480.0" layoutY="79.0" minWidth="26.0" mnemonicParsing="false" onAction="#SearchButton" prefHeight="30.0" prefWidth="59.0" text="search">
+      <Button id="SearchBtn" fx:id="SearchBtn" alignment="TOP_LEFT" layoutX="500.0" layoutY="103.0" minWidth="26.0" mnemonicParsing="false" onAction="#SearchButton" prefHeight="30.0" prefWidth="59.0" text="search">
          <font>
             <Font size="9.0" />
          </font></Button>
