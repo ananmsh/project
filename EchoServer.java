@@ -331,8 +331,27 @@ public class EchoServer extends AbstractServer
           }
           else
           {
-        	  answer.add("LogSuccesfull");
-        	  client.sendToClient(answer);
+        	String sql2 = "SELECT * FROM content_department_employee WHERE id = ?";
+				PreparedStatement stmt4 = con1.prepareStatement(sql2);
+				stmt4.setString(1, ((ArrayList<String>)obj).get(1)); 
+				rs = stmt4.executeQuery();
+				
+				ArrayList<String> answer2=new ArrayList<String>();
+				answer2.add("LoginAnswer");
+				rs.beforeFirst();
+				rs.beforeFirst();
+				if(!rs.next())
+				{
+					
+					answer2.add("LogCustomer");
+					/////////////////System.out.println(answer2.get(1));
+					client.sendToClient(answer2);
+				}
+				else 
+				{
+					answer2.add("LogEmployee");
+					client.sendToClient(answer2);
+				}  
           }
       }
       catch(Exception e){
