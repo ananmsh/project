@@ -45,10 +45,22 @@ public class AddCityGui {
     	   newCity.AddCity(cityToAdd);
     }
 
-    @FXML
+   @FXML
     void btnCancel(ActionEvent event) {
      
-    	((Node) event.getSource()).getScene().getWindow().hide(); 
+    	try {
+			((Node) event.getSource()).getScene().getWindow().hide(); 
+			Pane root = FXMLLoader.load(getClass().getResource("/Fxml/CatalogEmployee.fxml"));//build the gui
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.show();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
     }
 
     @FXML
