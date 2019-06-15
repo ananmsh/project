@@ -40,16 +40,35 @@ public class LoginGui {
 
     @FXML
     private PasswordField textPassword;
-
+	
+    @FXML
+    private Label RegesterationID;
+    
+    @FXML
+    private ImageView ImageLogo;
+	
     @FXML
     void CancelButton(ActionEvent event) {
+	try {
+			((Node) event.getSource()).getScene().getWindow().hide(); 
+			Pane root = FXMLLoader.load(getClass().getResource("/Fxml/Catalog.fxml"));//build the gui
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.show();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 
+		} 
     }
 
     @FXML
     void LoginButton(ActionEvent event) {
     	ArrayList<String> Strings=new ArrayList<String>();
-        boolean check;
+        String check;
     	Strings.add("LoginCheck");
     	String ID = textID.getText().toString();
         String password = textPassword.getText().toString();
@@ -68,37 +87,96 @@ public class LoginGui {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	}
-       check = (boolean)Main.getClient().getClient().getLoginAnswer();
-       System.out.println(check);
-       if(check == true)
-       {
-    	        Alert alert = new Alert(AlertType.CONFIRMATION);
-    	        alert.setContentText("Login Successfull");
-    	        alert.setTitle("Success");
-    	        alert.setHeaderText(null);
-    	        alert.showAndWait();
-    	        try {
-    	        ((Node) event.getSource()).getScene().getWindow().hide(); 
-    	        Pane root = FXMLLoader.load(getClass().getResource("/Fxml/ReportGui.fxml"));//build the gui
-    			Scene scene = new Scene(root);
-    			scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
-    			Stage stage = new Stage();
+       check = (String)Main.getClient().getClient().getLoginAnswer();
+       if(check == "Customer")						//receiving answer customer from the server  
+		{
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setContentText("Login Successfull");
+			alert.setTitle("Success");
+			alert.setHeaderText(null);
+			alert.showAndWait();
+			try {
+				((Node) event.getSource()).getScene().getWindow().hide(); 
+				Pane root = FXMLLoader.load(getClass().getResource("/Fxml/Catalog.fxml"));//build the gui
+				Scene scene = new Scene(root);
+				scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
+				Stage stage = new Stage();
 				stage.setScene(scene);
-    			stage.show();
-    	        }
-    	        catch(Exception e)
-    	        {
-    				e.printStackTrace();
+				stage.show();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
 
-    	        }
-    	    }
-       else {
-    	   Alert alert = new Alert(AlertType.CONFIRMATION);
-	        alert.setContentText("Please enter correct ID and Password");
-	        alert.setTitle("Failed" );
-	        alert.setHeaderText(null);
-	        alert.showAndWait();
-       }
+			} 
+		}
+		else if (check == "Employee")  				//receiving answer Employee from the server 
+		{	
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setContentText("Login Successfull");
+			alert.setTitle("Success");
+			alert.setHeaderText(null);
+			alert.showAndWait();
+		try {
+				((Node) event.getSource()).getScene().getWindow().hide(); 
+				Pane root = FXMLLoader.load(getClass().getResource("/Fxml/CatalogEmployee.fxml"));//build the gui
+				Scene scene = new Scene(root);
+				scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
+				Stage stage = new Stage();
+				stage.setScene(scene);
+				stage.show();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		}
+		else if (check == "Manager")				//receiving answer Manager from the server 
+		{	
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setContentText("Login Successfull");
+			alert.setTitle("Success");
+			alert.setHeaderText(null);
+			alert.showAndWait();
+		try {
+				((Node) event.getSource()).getScene().getWindow().hide(); 
+				Pane root = FXMLLoader.load(getClass().getResource("/Fxml/Catalog.fxml"));//build the gui
+				Scene scene = new Scene(root);
+				scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
+				Stage stage = new Stage();
+				stage.setScene(scene);
+				stage.show();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		}	
+		else {									//receiving answer Failed from the server 
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setContentText("Please enter correct ID and Password");
+			alert.setTitle("Failed" );
+			alert.setHeaderText(null);
+			alert.showAndWait();
+		}
+		}
+
+		@FXML
+		void Regesteration(MouseEvent event) {
+			try {
+				((Node) event.getSource()).getScene().getWindow().hide(); 
+				Pane root = FXMLLoader.load(getClass().getResource("/Fxml/Registeration.fxml"));//build the gui
+				Scene scene = new Scene(root);
+				scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
+				Stage stage = new Stage();
+				stage.setScene(scene);
+				stage.show();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+
+			}
        }
     	   
 
@@ -109,6 +187,8 @@ public class LoginGui {
         assert label != null : "fx:id=\"label\" was not injected: check your FXML file 'Login.fxml'.";
         assert textID != null : "fx:id=\"textEmail\" was not injected: check your FXML file 'Login.fxml'.";
         assert textPassword != null : "fx:id=\"textPassword\" was not injected: check your FXML file 'Login.fxml'.";
-
+	
+	    Image logo= new Image(getClass().getResourceAsStream("/Images/Logo.png"));
+	ImageLogo.setImage(logo);	
     }
 }
