@@ -56,6 +56,11 @@ public class EchoServer extends AbstractServer
 			 {
 				 AddMap(obj);
 			 }
+			  else if(obj instanceof MapPlace)   //new
+			 {
+				 
+				 UpdatePlaceCordinates(obj);
+			 }
 				 else if(((ArrayList<String>)obj).get(0).equals("GetPlacesNames"))
 					 {
 					    try {
@@ -98,6 +103,11 @@ public class EchoServer extends AbstractServer
 						e.printStackTrace();
 					} 			 
 				 }
+				  else if(((ArrayList<String>)obj).get(0).equals("GetplacesWithCordinatesForList"))  //new
+				  {
+					 GetPlacesWithCordinates(obj, client); 	
+					 
+				   }
 				 else if(((ArrayList<String>)obj).get(0).equals("GetMapsForCatalogList"))
 				 {
 					 try {
@@ -143,7 +153,66 @@ public class EchoServer extends AbstractServer
 					}
 					 
 				 }
+				  else if(((ArrayList<String>)obj).get(0).equals("GetImageForMap"))      ///new
+				 {
+					 try {
+							GetImageForMap(obj, client);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				 }
 
+  }
+  
+  
+  private void GetImageForMap(Object obj,ConnectionToClient client) throws IOException    /////new
+  {
+	 File file=null;
+	 MyFile msg;
+	  PreparedStatement stmt2;
+		try {
+			stmt2 = con1.prepareStatement("SELECT mapImage FROM project.map WHERE Name=?");
+			stmt2.setString(1,((ArrayList<String>)obj).get(1));
+		    rs=stmt2.executeQuery();
+		  
+		    if(rs.next())
+		    {
+		    	InputStream input= rs.getBinaryStream(1);
+		    	  byte[] buffer= new byte[1024]; 	 
+			      file=new File("src\\Images\\k.jpg");
+			      OutputStream output= new FileOutputStream(file);
+			      int size=0;
+		    	  while((size=input.read(buffer))!=-1)
+		    	  {
+		    		  output.write(buffer, 0, size);
+		    	  }
+		    	  msg=new MyFile("k.jpg");
+			      FileInputStream fis = new FileInputStream(file);
+			      byte[] bufferPic= new byte[(int)file.length()]; 
+		    	  BufferedInputStream bis = new BufferedInputStream(fis);	
+		    	  msg.initArray(bufferPic.length);
+		          msg.setSize(bufferPic.length);
+		    	  bis.read(msg.getMybytearray(),0,bufferPic.length);
+		    	
+		    	try {
+		    		
+					client.sendToClient(msg);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		   }
+
+		 } catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+
+	  
+	  
   }
   
   private void GetImageForMap(Object obj,ConnectionToClient client) throws IOException
@@ -284,6 +353,33 @@ public class EchoServer extends AbstractServer
 				e.printStackTrace();
 			}
 	  
+	  
+  }
+  
+   private void GetPlacesWithCordinates(Object obj,ConnectionToClient client)       /////new
+  {
+	  PreparedStatement stmt2;
+		try {
+			stmt2 = con1.prepareStatement("SELECT place_name,corX,corY FROM project.map_place WHERE map_name = ?");
+		  stmt2.setString(1,((ArrayList<String>)obj).get(1));
+		  rs=stmt2.executeQuery();
+		  ArrayList<MapPlace> names=new ArrayList<MapPlace>();
+		  
+		  names.add(new MapPlace("returnedMapPlaces", 0, 0));
+		  while(rs.next()) {
+			  names.add(new MapPlace(rs.getString(1), rs.getDouble(2), rs.getDouble(3)));
+		  }
+				try {
+					client.sendToClient(names);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		
+		 } catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	  
   }
    
@@ -539,7 +635,22 @@ private void AddMap(Object obj)
 	
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private void UpdatePlaceCordinates(Object obj)            ///////new
+{
+	PreparedStatement stmt2;
+	try {
+		stmt2 = con1.prepareStatement("UPDATE project.map_place SET corX = ?, corY= ? WHERE place_name = ?;");  
+	  stmt2.setDouble(1, ((MapPlace)obj).getCorX());
+	  stmt2.setDouble(2, ((MapPlace)obj).getCorY());
+	  stmt2.setString(3, ((MapPlace)obj).getPlaceName());
+	  stmt2.executeUpdate();
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}//update the version of the selected city accordingly
 
+	
+}
 
 protected void serverStarted()
   {
