@@ -7,9 +7,10 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.AddCityGui">
    <children>
-      <TextField id="CityName" fx:id="CityName" layoutX="212.0" layoutY="144.0" promptText="name" />
-      <Button id="AddCityBtn" fx:id="AddCityBtn" layoutX="202.0" layoutY="301.0" mnemonicParsing="false" onAction="#AddCityBtn" text="Add" />
-      <Label id="CityNameLbl" fx:id="CityNameLbl" layoutX="140.0" layoutY="148.0" text="City Name:" />
-      <Button id="CancelBtn" fx:id="CancelBtn" layoutX="309.0" layoutY="301.0" mnemonicParsing="false" onAction="#btnCancel" text="Cancel" />
+      <TextField id="CityName" fx:id="CityName" layoutX="240.0" layoutY="175.0" promptText="name" />
+      <Button id="AddCityBtn" fx:id="AddCityBtn" layoutX="233.0" layoutY="301.0" mnemonicParsing="false" onAction="#AddCityBtn" text="Add" />
+      <Label id="CityNameLbl" fx:id="CityNameLbl" layoutX="168.0" layoutY="179.0" text="City Name:" />
+      <Button id="CancelBtn" fx:id="CancelBtn" layoutX="300.0" layoutY="301.0" mnemonicParsing="false" onAction="#btnCancel" text="Cancel" />
    </children>
 </AnchorPane>
+
