@@ -16,7 +16,8 @@ public class ChatClient extends AbstractClient
   ArrayList<String> cityReport;
   ArrayList<String> MapsNames;
   Image image;
-  String s;
+  String s;                            //
+  ArrayList<MapPlace> MapPlaces;   
 String LoginAnswer;
   
 public String getLoginAnswer() {
@@ -83,7 +84,8 @@ public ChatClient(String host, int port, ChatIF clientUI)  throws IOException
     cityReport=new ArrayList<String>();
     MapsNames=new ArrayList<String>();
     image=null;
-    s= new String();
+    s= new String();                                    //
+    MapPlaces=new ArrayList<MapPlace>();  
   }
 
   public ArrayList<String> getPlacesNames() {
@@ -98,8 +100,9 @@ public void setPlacesNames(ArrayList<String> placesNames) {
 
 public void handleMessageFromServer(Object obj) 
   {
-  	if(obj instanceof MyFile)
-		{
+  	
+	if(obj instanceof MyFile)
+	{
 		 MyFile file;
 		  int fileSize =((MyFile)obj).getSize(); 
 		  file=new MyFile(((MyFile)obj).getFileName());
@@ -118,7 +121,14 @@ public void handleMessageFromServer(Object obj)
 					// TODO Auto-generated catch block
 		     		e.printStackTrace();
 		    	}		
-		}
+	}
+	else if(((ArrayList<MapPlace>)obj).get(0).getPlaceName().equals("returnedMapPlaces"))       //////////
+	{
+		System.out.println(((ArrayList<MapPlace>)obj).get(0).getPlaceName());
+		((ArrayList<MapPlace>)obj).remove(0);
+		setMapPlaces((ArrayList<MapPlace>)obj);
+		
+	}
 	else if(((ArrayList<String>)obj).get(0).equals("PlacesNames")) 
 	{
 		((ArrayList<String>)obj).remove(0);
@@ -171,7 +181,15 @@ public void handleMessageFromServer(Object obj)
 	  sendToServer(strings);
 	  
   }
+  
+    public void MapToUpdate(MapPlace x) throws IOException         //////////
+  {
+	  sendToServer(x);
+  }
+  
   //////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  
   
   public void handleMessageFromClientUI(String message)  
   {
