@@ -32,7 +32,7 @@ public class ReportController {
     	CityForReport.add(cityName);//gets the selected city
     	
     	try {
-    		Main.getClient().getClient().ReportForCity(CityForReport);
+    		Main.getClient().getClient().StringsToServer(CityForReport);
     	} catch (IOException e1) {
     		// TODO Auto-generated catch block
     		e1.printStackTrace();
