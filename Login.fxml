@@ -4,22 +4,25 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="437.0" prefWidth="548.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.LoginGui">
 <children>
-<Button fx:id="button" layoutX="180.0" layoutY="311.0" onAction="#LoginButton" text="Login" />
+<Button fx:id="button" layoutX="220.0" layoutY="311.0" onAction="#LoginButton" text="Login" />
 <Label fx:id="label" layoutX="204.0" layoutY="269.0" prefHeight="17.0" prefWidth="149.0" />
 <TextField fx:id="textID" layoutX="219.0" layoutY="181.0" />
 <Label layoutX="173.0" layoutY="185.0" text="ID:" />
 <Label layoutX="142.0" layoutY="235.0" text="Password:" />
 <PasswordField fx:id="textPassword" layoutX="219.0" layoutY="231.0" />
-      <Button layoutX="343.0" layoutY="311.0" mnemonicParsing="false" onAction="#CancelButton" text="cancel" />
-      <Label layoutX="174.0" layoutY="36.0" prefHeight="53.0" prefWidth="210.0" text="login page" textFill="#e41414">
+      <Button id="CancelButton" fx:id="CancelButton" layoutX="303.0" layoutY="311.0" mnemonicParsing="false" onAction="#CancelButton" text="cancel" />
+      <Label layoutX="191.0" layoutY="80.0" prefHeight="53.0" prefWidth="210.0" text="login page" textFill="#e41414">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
+      <Label id="RegesterationID" fx:id="RegesterationID" layoutX="220.0" layoutY="263.0" onMousePressed="#Regesteration" text="Registeration" textFill="#3305eb" underline="true" />
+      <ImageView id="ImageLogo" fx:id="ImageLogo" fitHeight="88.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
 </children>
 </AnchorPane>
