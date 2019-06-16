@@ -16,15 +16,16 @@ public class ZoomingPane extends Pane {
 
     ZoomingPane(Node content) {
         this.content = content;
-        getChildren().add(content);
+       
         Scale scale = new Scale(1, 1);
-        content.getTransforms().add(scale);
+        this.content.getTransforms().add(scale);
 
         zoomFactor.addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                scale.setX(newValue.doubleValue());
-                scale.setY(newValue.doubleValue());
+                scale.setX(newValue.doubleValue()+0.2);
+                scale.setY(newValue.doubleValue()+0.2);
                 requestLayout();
+             
             }
         });
     }
