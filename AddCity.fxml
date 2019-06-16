@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.AddCityGui">
    <children>
-      <TextField id="CityName" fx:id="CityName" layoutX="240.0" layoutY="175.0" promptText="name" />
-      <Button id="AddCityBtn" fx:id="AddCityBtn" layoutX="233.0" layoutY="301.0" mnemonicParsing="false" onAction="#AddCityBtn" text="Add" />
-      <Label id="CityNameLbl" fx:id="CityNameLbl" layoutX="168.0" layoutY="179.0" text="City Name:" />
-      <Button id="CancelBtn" fx:id="CancelBtn" layoutX="300.0" layoutY="301.0" mnemonicParsing="false" onAction="#btnCancel" text="Cancel" />
+      <TextField id="NewCityName" fx:id="NewCityName" layoutX="250.0" layoutY="200.0" promptText="add new city" visible="false" />
+      <Button id="AddCityBtn" fx:id="AddCityBtn" layoutX="222.0" layoutY="333.0" mnemonicParsing="false" onAction="#AddCityBtn" text="Add" />
+      <Label id="CityNameLbl" fx:id="CityNameLbl" layoutX="182.0" layoutY="167.0" text="City Name:" />
+      <Button id="CancelBtn" fx:id="CancelBtn" layoutX="297.0" layoutY="333.0" mnemonicParsing="false" onAction="#btnCancel" text="Cancel" />
+      <ImageView id="GcmImage" fx:id="GcmImage" fitHeight="88.0" fitWidth="189.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="166.0" layoutY="83.0" text="Relating map to city">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <ComboBox id="citiesCombo" fx:id="citiesCombo" layoutX="249.0" layoutY="163.0" onAction="#citiesCombo" prefWidth="150.0" promptText="Cities Names" />
+      <Button id="LogOutBtn" fx:id="LogOutBtn" layoutX="534.0" layoutY="28.0" mnemonicParsing="false" onAction="#LogOutBtn" text="Log Out" />
+      <Button id="homeBtn" fx:id="homeBtn" layoutX="435.0" layoutY="28.0" mnemonicParsing="false" onAction="#homeBtn" text="Home" />
+      <Button id="profileBtn" fx:id="profileBtn" layoutX="484.0" layoutY="28.0" mnemonicParsing="false" onAction="#profileBtn" text="profile" />
    </children>
 </AnchorPane>
-
