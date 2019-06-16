@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import com.sun.javafx.image.impl.ByteIndexed.Getter;
 import com.sun.javafx.tk.Toolkit;
 import com.mysql.cj.protocol.a.MysqlBinaryValueDecoder;
@@ -19,29 +20,36 @@ import entities.Map;
 import entities.MapPlace;
 import entities.Place;
 import entities.Tour;
-import ocsf.server.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import ocsf.server.*;
 
 public class EchoServer extends AbstractServer 
 {
+
 	final public static int DEFAULT_PORT = 5555;
 	static Connection con1;
 	ResultSet rs ;
 	Statement stmt;
-
+	
+////////////////////////////////////////Constructor////////////////////////////////////////////////
+	
 	public EchoServer(int port) 
 	{
 		super(port);
 	}
 
+	
+	///////////////////////////////////HandleMessageFromClient//////////////////////////////////////
+	
 	public void handleMessageFromClient(Object obj, ConnectionToClient client)
+
 	{
+
 		if(obj instanceof Customer)
 		{
 			AddCustomer(obj);
 		}
-	 
 		else if(obj instanceof City)
 		{
 			AddCity(obj);
@@ -58,12 +66,13 @@ public class EchoServer extends AbstractServer
 		{
 			AddMap(obj);
 		}
-		 else if(obj instanceof MapPlace)   
-		 {
+		else if(obj instanceof MapPlace)   //new
+		{
+			UpdatePlaceCordinates(obj);
+		}
 
-			 UpdatePlaceCordinates(obj);
-		 }
-		else if(((ArrayList<String>)obj).get(0).equals("GetPlacesNames"))
+
+		if(((ArrayList<String>)obj).get(0).equals("GetPlacesNames"))
 		{
 			try {
 				GetPlacesList(obj,client);
@@ -84,6 +93,7 @@ public class EchoServer extends AbstractServer
 		else if(((ArrayList<String>)obj).get(0).equals("GetCityNames"))
 		{
 			try {
+
 				GetCityList(obj, client);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -105,11 +115,12 @@ public class EchoServer extends AbstractServer
 				e.printStackTrace();
 			} 			 
 		}
-		 else if(((ArrayList<String>)obj).get(0).equals("GetplacesWithCordinatesForList"))  
-		  {
-			 GetPlacesWithCordinates(obj, client); 	
+		else if(((ArrayList<String>)obj).get(0).equals("GetplacesWithCordinatesForList"))  //new
+		{
+		
+			GetPlacesWithCordinates(obj, client); 	
 
-		   }
+		}
 		else if(((ArrayList<String>)obj).get(0).equals("GetMapsForCatalogList"))
 		{
 			try {
@@ -135,7 +146,7 @@ public class EchoServer extends AbstractServer
 			}
 
 		}
-		else if(((ArrayList<String>)obj).get(0).equals("GetImageForMap"))
+		else if(((ArrayList<String>)obj).get(0).equals("GetImageForMap"))      ///new
 		{
 			try {
 				GetImageForMap(obj, client);
@@ -143,7 +154,7 @@ public class EchoServer extends AbstractServer
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}	 
+		}
 		else if(((ArrayList<String>)obj).get(0).equals("LoginCheck"))
 		{
 			try {
@@ -155,17 +166,63 @@ public class EchoServer extends AbstractServer
 			}
 
 		}
-		 else if(((ArrayList<String>)obj).get(0).equals("GetImageForMap"))      
-		 {
-			 try {
-					GetImageForMap(obj, client);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		 }
+
+
 	}
-	private void GetImageForMap(Object obj,ConnectionToClient client) throws IOException
+		
+	
+////////////////////////////////////Returns to Client////////////////////////////////////////////
+	private void CheckLogin(Object obj, ConnectionToClient client) throws SQLException
+	{
+		String sql = "SELECT * FROM customer WHERE id = ? and password = ?";
+		try{
+			
+			PreparedStatement stmt3 = con1.prepareStatement(sql);
+			stmt3.setString(1, ((ArrayList<String>)obj).get(1));
+			stmt3.setString(2, ((ArrayList<String>)obj).get(2));
+			rs = stmt3.executeQuery();
+			ArrayList<String> answer=new ArrayList<String>();
+			answer.add("LoginAnswer");
+			rs.beforeFirst();
+			rs.beforeFirst();
+			if(!rs.next())
+			{
+				answer.add("LogFailed");
+				client.sendToClient(answer);
+			}
+			else
+			{	
+				String sql2 = "SELECT * FROM content_department_employee WHERE id = ?";
+				PreparedStatement stmt4 = con1.prepareStatement(sql2);
+				stmt4.setString(1, ((ArrayList<String>)obj).get(1)); 
+				rs = stmt4.executeQuery();
+				
+				ArrayList<String> answer2=new ArrayList<String>();
+				answer2.add("LoginAnswer");
+				rs.beforeFirst();
+				rs.beforeFirst();
+				if(!rs.next())
+				{
+					
+					answer2.add("LogCustomer");
+					/////////////////System.out.println(answer2.get(1));
+					client.sendToClient(answer2);
+				}
+				else 
+				{
+					answer2.add("LogEmployee");
+					client.sendToClient(answer2);
+				}  
+
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+
+	}
+
+	private void GetImageForMap(Object obj,ConnectionToClient client) throws IOException    /////new
 	{
 		File file=null;
 		MyFile msg;
@@ -202,18 +259,17 @@ public class EchoServer extends AbstractServer
 					e.printStackTrace();
 				}
 			}
-			// String localUrl=file.toURI().toURL().toString();
-			/* FileInputStream imageInput= new FileInputStream(file);
-		     // String localUrl=file.toURI().toURL().toString();
-		      Image image = new Image(imageInput);*/
-
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	  
-	}
+		}
 
+
+
+
+
+	}
 	private void GetMapWithDescription(Object obj,ConnectionToClient client) throws IOException
 	{
 		PreparedStatement stmt2;
@@ -247,7 +303,12 @@ public class EchoServer extends AbstractServer
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	  
+		}
+
+
+
+
+
 	}
 
 	private void GetMapsForCatalogSearch(Object obj,ConnectionToClient client) throws IOException
@@ -277,6 +338,7 @@ public class EchoServer extends AbstractServer
 
 
 	}
+
 	private void GetCityForCatalogSearch(Object obj,ConnectionToClient client)
 	{
 
@@ -307,47 +369,35 @@ public class EchoServer extends AbstractServer
 	}
 
 	private void GetPlacesWithCordinates(Object obj,ConnectionToClient client)       /////new
-	  {
-		  PreparedStatement stmt2;
-			try {
-				stmt2 = con1.prepareStatement("SELECT place_name,corX,corY FROM project.map_place WHERE map_name = ?");
-			  stmt2.setString(1,((ArrayList<String>)obj).get(1));
-			  rs=stmt2.executeQuery();
-			  ArrayList<MapPlace> names=new ArrayList<MapPlace>();
-
-			  names.add(new MapPlace("returnedMapPlaces", 0, 0));
-			  while(rs.next()) {
-				  names.add(new MapPlace(rs.getString(1), rs.getDouble(2), rs.getDouble(3)));
-			  }
-					try {
-						client.sendToClient(names);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-			 } catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-	  }
-	private void UpdatePlaceCordinates(Object obj)            ///////new
 	{
 		PreparedStatement stmt2;
 		try {
-			stmt2 = con1.prepareStatement("UPDATE project.map_place SET corX = ?, corY= ? WHERE place_name = ?;");  
-		  stmt2.setDouble(1, ((MapPlace)obj).getCorX());
-		  stmt2.setDouble(2, ((MapPlace)obj).getCorY());
-		  stmt2.setString(3, ((MapPlace)obj).getPlaceName());
-		  stmt2.executeUpdate();
+
+			stmt2 = con1.prepareStatement("SELECT place_name,corX,corY FROM project.map_place WHERE map_name = ?");
+			stmt2.setString(1,((ArrayList<String>)obj).get(1));
+			rs=stmt2.executeQuery();
+			ArrayList<MapPlace> names=new ArrayList<MapPlace>();
+
+			names.add(new MapPlace("returnedMapPlaces", 0, 0));
+			while(rs.next()) {
+				names.add(new MapPlace(rs.getString(1), rs.getDouble(2), rs.getDouble(3)));
+			}
+			try {
+
+				client.sendToClient(names);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}//update the version of the selected city accordingly
-
+		}
 
 	}
+
+
 	private void GetPlacesForCatalogList(Object obj,ConnectionToClient client) throws IOException
 	{
 		PreparedStatement stmt2;
@@ -402,6 +452,7 @@ public class EchoServer extends AbstractServer
 
 	public void GetCityList(Object obj,ConnectionToClient client) throws SQLException
 	{
+
 		stmt= con1.createStatement();
 		rs = stmt.executeQuery(((ArrayList<String>)obj).get(1));//executed the required query
 		ArrayList<String> names=new ArrayList<String>();
@@ -417,8 +468,6 @@ public class EchoServer extends AbstractServer
 		}
 
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	private void GetCityReport(Object obj,ConnectionToClient client) throws SQLException
 	{
@@ -438,7 +487,6 @@ public class EchoServer extends AbstractServer
 		}
 	}
 
-	/////////////////////////////////////////////////getting places to add tours/////////////////////////////////
 	private void GetPlacesList(Object obj,ConnectionToClient client) throws IOException
 	{
 		try {
@@ -459,7 +507,9 @@ public class EchoServer extends AbstractServer
 
 	}
 
-	////////////////////////////////////////////////////////Adding Data////////////////////////////////////////////////////////
+	
+	
+	////////////////////////////////////////////////////////Adding new Data to DB////////////////////////////////////////////////////////
 	private void AddTour(Object obj) {
 		PreparedStatement stmt2;
 		try {
@@ -532,55 +582,6 @@ public class EchoServer extends AbstractServer
 		}//update the version of the selected city accordingly
 
 	}
-	private void CheckLogin(Object obj, ConnectionToClient client) throws SQLException
-	{
-		String sql = "SELECT * FROM customer WHERE id = ? and password = ?";
-		try{
-			
-			PreparedStatement stmt3 = con1.prepareStatement(sql);
-			stmt3.setString(1, ((ArrayList<String>)obj).get(1));
-			stmt3.setString(2, ((ArrayList<String>)obj).get(2));
-			rs = stmt3.executeQuery();
-			ArrayList<String> answer=new ArrayList<String>();
-			answer.add("LoginAnswer");
-			rs.beforeFirst();
-			rs.beforeFirst();
-			if(!rs.next())
-			{
-				answer.add("LogFailed");
-				client.sendToClient(answer);
-			}
-			else
-			{	
-				String sql2 = "SELECT * FROM content_department_employee WHERE id = ?";
-				PreparedStatement stmt4 = con1.prepareStatement(sql2);
-				stmt4.setString(1, ((ArrayList<String>)obj).get(1)); 
-				rs = stmt4.executeQuery();
-				
-				ArrayList<String> answer2=new ArrayList<String>();
-				answer2.add("LoginAnswer");
-				rs.beforeFirst();
-				rs.beforeFirst();
-				if(!rs.next())
-				{
-					
-					answer2.add("LogCustomer");
-					/////////////////System.out.println(answer2.get(1));
-					client.sendToClient(answer2);
-				}
-				else 
-				{
-					answer2.add("LogEmployee");
-					client.sendToClient(answer2);
-				}  
-
-			}
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-
-	}
 
 	private void AddMap(Object obj)
 	{
@@ -602,9 +603,30 @@ public class EchoServer extends AbstractServer
 		}//update the version of the selected city accordingly
 
 	}
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	
+	/////////////////////////////////////////////////////////Updating Data in DB///////////////////////////////
+
+	private void UpdatePlaceCordinates(Object obj)            
+	{
+		PreparedStatement stmt2;
+		try {
+			stmt2 = con1.prepareStatement("UPDATE project.map_place SET corX = ?, corY= ? WHERE place_name = ?;");  
+			stmt2.setDouble(1, ((MapPlace)obj).getCorX());
+			stmt2.setDouble(2, ((MapPlace)obj).getCorY());
+			stmt2.setString(3, ((MapPlace)obj).getPlaceName());
+			stmt2.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}//update the version of the selected city accordingly
 
 
+	}
+	
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	protected void serverStarted()
 	{
 		System.out.println ("Server listening for connections on port " + getPort());
@@ -661,3 +683,4 @@ public class EchoServer extends AbstractServer
 	}
 }
 //End of EchoServer class
+
