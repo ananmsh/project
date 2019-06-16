@@ -115,54 +115,65 @@ public void handleMessageFromServer(Object obj)
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	    		FileInputStream input = new FileInputStream(picfile);
-			    image= new Image(input);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-		     		e.printStackTrace();
-		    	}		
+			   FileInputStream input = new FileInputStream(picfile);
+			   image= new Image(input);
+		  } catch (FileNotFoundException e) {
+			  // TODO Auto-generated catch block
+			  e.printStackTrace();
+		  }		
 	}
-	else if(((ArrayList<MapPlace>)obj).get(0).getPlaceName().equals("returnedMapPlaces"))       //////////
+
+	else if(obj instanceof ArrayList)
 	{
-		System.out.println(((ArrayList<MapPlace>)obj).get(0).getPlaceName());
-		((ArrayList<MapPlace>)obj).remove(0);
-		setMapPlaces((ArrayList<MapPlace>)obj);
-		
-	}
-	else if(((ArrayList<String>)obj).get(0).equals("PlacesNames")) 
-	{
-		((ArrayList<String>)obj).remove(0);
-		setPlacesNames((ArrayList<String>)obj);
-	}
-	else if(((ArrayList<String>)obj).get(0).equals("CityNames"))
-	{
-		((ArrayList<String>)obj).remove(0);
-		setCityNames((ArrayList<String>)obj);
-		
-	}
-	else if(((ArrayList<String>)obj).get(0).equals("ReportNames"))
-	{
-		((ArrayList<String>)obj).remove(0);
-		setCityReport((ArrayList<String>)obj);
-	}
-	else if(((ArrayList<String>)obj).get(0).equals("MapsNames"))
-	{
-		((ArrayList<String>)obj).remove(0);
-		setMapsNames((ArrayList<String>)obj);
-	}
-	else if(((ArrayList<String>)obj).get(0).equals("LoginAnswer"))
-	{
-		((ArrayList<String>)obj).remove(0);
-		if(((ArrayList<String>)obj).get(0).equals("LogCustomer")) 
-			{
-			setLoginAnswer("Customer");
-			}
-		else if (((ArrayList<String>)obj).get(0).equals("LogEmployee")) 
+		if(((ArrayList<String>)obj).get(0) instanceof String )
 		{
-		setLoginAnswer("Employee");
+			if(((ArrayList<String>)obj).get(0).equals("PlacesNames")) 
+			{
+				((ArrayList<String>)obj).remove(0);
+				setPlacesNames((ArrayList<String>)obj);
+			}
+			else if(((ArrayList<String>)obj).get(0).equals("CityNames"))
+			{
+				((ArrayList<String>)obj).remove(0);
+				setCityNames((ArrayList<String>)obj);
+
+			}
+			else if(((ArrayList<String>)obj).get(0).equals("ReportNames"))
+			{
+				((ArrayList<String>)obj).remove(0);
+				setCityReport((ArrayList<String>)obj);
+			}
+			else if(((ArrayList<String>)obj).get(0).equals("MapsNames"))
+			{
+				((ArrayList<String>)obj).remove(0);
+				setMapsNames((ArrayList<String>)obj);
+			}
+			else if(((ArrayList<String>)obj).get(0).equals("LoginAnswer"))
+			{
+				((ArrayList<String>)obj).remove(0);
+				if(((ArrayList<String>)obj).get(0).equals("LogCustomer")) 
+				{
+					setLoginAnswer("Customer");
+				}
+				else if (((ArrayList<String>)obj).get(0).equals("LogEmployee")) 
+				{
+					setLoginAnswer("Employee");
+				}
+				else if(((ArrayList<String>)obj).get(0).equals("LogFailed"))
+					setLoginAnswer("Failed");
+			}
+
 		}
-		else if(((ArrayList<String>)obj).get(0).equals("LogFailed"))
-			setLoginAnswer("Failed");
+		else if(((ArrayList<MapPlace>)obj).get(0) instanceof MapPlace )
+		{
+			
+			if(((ArrayList<MapPlace>)obj).get(0).getPlaceName().equals("returnedMapPlaces"))       //////////
+			{
+				((ArrayList<MapPlace>)obj).remove(0);
+				setMapPlaces((ArrayList<MapPlace>)obj);
+
+			}
+		}
 	}
 	 
   }
