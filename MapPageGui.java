@@ -3,12 +3,17 @@ package Gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 
 import application.Main;
 import entities.MapPlace;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -38,12 +43,15 @@ import javafx.scene.input.SwipeEvent;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Scale;
+import javafx.util.Duration;
 
 public class MapPageGui {
 	String PlaceName;
-	ArrayList<MapPlace> mapPlaces;
+	ArrayList<MapPlace> mapPlaces; 
 	MapPlace PlaceToUpdate;
 	int temp=0;
+	int flag=0;
+	 Group zoomGroup;
     @FXML
     private ResourceBundle resources;
     
@@ -66,6 +74,15 @@ public class MapPageGui {
        
     @FXML
     private Slider ScrollZoom;
+    
+    @FXML
+    private Button HomeId;
+
+    @FXML
+    private Button ProfileId;
+
+    @FXML
+    private Button LogOutID;
 
     @FXML
     private Button ZoomInBtn;
@@ -81,7 +98,8 @@ public class MapPageGui {
 
     @FXML
     void MapClick(MouseEvent event) {
-    	
+    	if(flag==1)
+    	{
 	   double x=event.getX();
 	   double y= event.getY();
 	   for(int i=0;i<mapPlaces.size();i++)
@@ -103,8 +121,10 @@ public class MapPageGui {
 	    		   
 	    		    Image image=new Image(getClass().getResourceAsStream("../Img/iconLoc.png"));
 	    		    s.setImage(image);
+	    		   
 	    		    paneId.getChildren().add(s);
-	    			 
+	    		
+	    		   
 	    		 }
 	    		 else
 	    		 {
@@ -129,6 +149,7 @@ public class MapPageGui {
 		    		    Image image=new Image(getClass().getResourceAsStream("../Img/iconLoc.png"));
 		    		    s.setImage(image);
 		    		    paneId.getChildren().add(s);
+		    		   
 		    		    
 	    			 } 
 	    		     
@@ -137,9 +158,10 @@ public class MapPageGui {
 	    		 }
 	    		 
 	    	 }
+	     
 	     }
     
-    //MapImage.setDisable(true);
+  //  MapImage.setDisable(true);
     for(int i=0;i<mapPlaces.size();i++) 
     {
     	if(mapPlaces.get(i).getPlaceName().equals(PlaceName))
@@ -151,19 +173,20 @@ public class MapPageGui {
     }
     try {
 		Main.getClient().getClient().MapToUpdate(PlaceToUpdate);
-		
+		flag=0;
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+    	}
    }
-       
+ 
 
     @FXML
     void PlaceClick(MouseEvent event) {
-   // MapImage.setDisable(true);
-     PlaceName= new String(PlacesList.getSelectionModel().getSelectedItem());
-  
+  // MapImage.setDisable(true);
+    	 PlaceName= new String(PlacesList.getSelectionModel().getSelectedItem());
+    flag=1;
      for(int i=0;i<mapPlaces.size();i++)
      {
     	 if(mapPlaces.get(i).getPlaceName().equals(PlaceName));
@@ -176,7 +199,7 @@ public class MapPageGui {
     			 alert.setTitle("Note");
     			 alert.setHeaderText(null);
     			 alert.showAndWait();
-    			 //MapImage.setDisable(false);
+    			 
     			 
     		 }
     		 else
@@ -211,12 +234,6 @@ public class MapPageGui {
      
     }
 
-    
-    @FXML
-    void zoomSlider(ZoomEvent event) {
-    	 
-    }
-
 
     @FXML
     void ZoomInButton(ActionEvent event) {
@@ -230,6 +247,24 @@ public class MapPageGui {
     	double sliderValue= ScrollZoom.getValue();
     	ScrollZoom.setValue(sliderValue-=0.1);
     }
+    
+    @FXML
+    void HomeFunc(ActionEvent event) {
+
+    }
+
+    @FXML
+    void LogOutFunc(ActionEvent event) {
+
+    }
+    
+
+    @FXML
+    void toProfile(ActionEvent event) {
+
+    }
+    
+    ZoomingPane zoomingPane;
 
     @FXML
     void initialize() {
@@ -239,10 +274,13 @@ public class MapPageGui {
        ScrollZoom.setMin(0.5);
        ScrollZoom.setMax(1.5);
        ScrollZoom.setValue(1.0);
-  
+   
       
-       
+         
         assert ZoomInBtn != null : "fx:id=\"ZoomInBtn\" was not injected: check your FXML file 'map1.fxml'.";
+        assert HomeId != null : "fx:id=\"HomeId\" was not injected: check your FXML file 'Map.fxml'.";
+        assert ProfileId != null : "fx:id=\"ProfileId\" was not injected: check your FXML file 'Map.fxml'.";
+        assert LogOutID != null : "fx:id=\"LogOutID\" was not injected: check your FXML file 'Map.fxml'.";
         assert PlacesList != null : "fx:id=\"PlacesList\" was not injected: check your FXML file 'map1.fxml'.";
         mapPlaces= new ArrayList<MapPlace>();
        ArrayList<String> MaptoServer= new ArrayList<String>();
@@ -271,6 +309,9 @@ public class MapPageGui {
          PlacesList.setItems(list1);
          assert ScrolPaneID != null : "fx:id=\"ScrolPaneID\" was not injected: check your FXML file 'Map.fxml'.";
          assert paneId != null : "fx:id=\"paneId\" was not injected: check your FXML file 'Map.fxml'.";
+         zoomingPane = new ZoomingPane(paneId);
+         zoomingPane.zoomFactorProperty().bind(ScrollZoom.valueProperty());
+         
          assert MapImage != null : "fx:id=\"MapImageView\" was not injected: check your FXML file 'Map.fxml'.";
        
          ArrayList<String> MapImageToServer= new ArrayList<String>();
@@ -289,11 +330,10 @@ public class MapPageGui {
        		e.printStackTrace();
        	}
            MapImage.setImage(Main.getClient().getClient().getImage());
-        
+    
          
-        ZoomingPane zoomingPane = new ZoomingPane(paneId);
-        zoomingPane.zoomFactorProperty().bind(ScrollZoom.valueProperty());
-        System.out.println(ScrollZoom.valueProperty());
+       
+      
       
      
     
