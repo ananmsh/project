@@ -10,6 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.MapPageGui">
@@ -18,8 +19,12 @@
          <children>
             <Label id="zoomLBL" fx:id="zoomLBL" text="Zoom" />
             <Button id="ZoomOutBtn" fx:id="ZoomOutBtn" mnemonicParsing="false" onAction="#ZoomOutButton" text="-" />
-            <Slider id="ScrollZoom" fx:id="ScrollZoom" onZoom="#zoomSlider" />
+            <Slider id="ScrollZoom" fx:id="ScrollZoom" />
             <Button id="ZoomInBtn" fx:id="ZoomInBtn" minWidth="39.0" mnemonicParsing="false" onAction="#ZoomInButton" prefHeight="30.0" prefWidth="39.0" text="+" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button id="HomeId" fx:id="HomeId" mnemonicParsing="false" onAction="#HomeFunc" text="Home" />
+            <Button id="ProfileId" fx:id="ProfileId" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#toProfile" text="Profile" />
+            <Button id="LogOutID" fx:id="LogOutID" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#LogOutFunc" text="LogOut" />
          </children>
          <VBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
