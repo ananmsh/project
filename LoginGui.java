@@ -131,7 +131,7 @@ public class LoginGui {
 			alert.showAndWait();
 		try {
 				((Node) event.getSource()).getScene().getWindow().hide(); 
-				Pane root = FXMLLoader.load(getClass().getResource("/Fxml/CatalogEmployee.fxml"));//build the gui
+				Pane root = FXMLLoader.load(getClass().getResource("/Fxml/FirstPageEmployee.fxml"));//build the gui
 				Scene scene = new Scene(root);
 				scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
 				Stage stage = new Stage();
