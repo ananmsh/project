@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="540.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.FirstPageEmployeeGui">
+   <children>
+      <ImageView id="GcmImage" fx:id="GcmImage" fitHeight="88.0" fitWidth="189.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField id="SearchTxt" fx:id="SearchTxt" layoutX="135.0" layoutY="107.0" prefHeight="26.0" prefWidth="365.0" />
+      <Label id="WelcomeLBL" fx:id="WelcomeLBL" layoutX="197.0" layoutY="57.0" text="WELCOME TO GCM">
+         <font>
+            <Font name="System Bold Italic" size="25.0" />
+         </font>
+      </Label>
+      <Button id="SearchBtn" fx:id="SearchBtn" alignment="TOP_LEFT" layoutX="500.0" layoutY="103.0" minWidth="26.0" mnemonicParsing="false" onAction="#SearchButton" prefHeight="30.0" prefWidth="59.0" text="search">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <ListView id="CityList" fx:id="CityList" layoutX="106.0" layoutY="194.0" onMouseClicked="#CityListFunc" prefHeight="337.0" prefWidth="200.0" />
+      <ListView id="MapsNotRelatedList" fx:id="MapsNotRelatedList" layoutX="350.0" layoutY="195.0" onMouseClicked="#MapsNotRelatedList" prefHeight="337.0" prefWidth="200.0" />
+      <Label id="CityLbl" fx:id="CityLbl" layoutX="106.0" layoutY="177.0" text="City:" />
+      <Label layoutX="350.0" layoutY="178.0" text="Maps the tare not related to city:" />
+      <Button id="LogOut" fx:id="LogOut" layoutX="593.0" layoutY="26.0" mnemonicParsing="false" onAction="#LogOut" text="Log Out" />
+      <Button id="Profile" fx:id="Profile" layoutX="543.0" layoutY="26.0" mnemonicParsing="false" onAction="#Profile" text="Profile" />
+      <Button id="Home" fx:id="Home" layoutX="494.0" layoutY="26.0" mnemonicParsing="false" onAction="#Home" text="Home" />
+   </children>
+</AnchorPane>
