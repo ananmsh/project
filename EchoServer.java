@@ -58,6 +58,17 @@ public class EchoServer extends AbstractServer
 		{
 			AddPlace(obj);
 		}
+		else if(obj instanceof Purchase)//ADDED 18.6 1:42 AM BY ANAN
+	 {
+		 if(((Purchase) obj).getPurchaseType().equals("OneTime"))
+		 {
+		     AddOneTimePurchase(obj);
+		 }
+		 else if(((Purchase) obj).getPurchaseType().equals("subscription"))
+		 {
+			 AddSubscription(obj);
+		 }
+	 }
 		else if(obj instanceof Tour)
 		{
 			AddTour(obj);
@@ -568,7 +579,72 @@ public class EchoServer extends AbstractServer
 		}//update the version of the selected city accordingly
 
 	}
-
+	  private void AddSubscription(Object obj) {// ADDED 18.6 1:42 AM BY ANAN
+		PreparedStatement stmt2;
+		PreparedStatement stmt3;
+		try {
+			stmt2 = con1.prepareStatement("INSERT INTO project.customer_subscription VALUES (?,?,?,?)");
+		  stmt2.setString(2, ((Purchase)obj).getCityname());
+		  stmt2.setString(1, ((Purchase)obj).getCustomerid());
+		  stmt2.setString(3, ((Purchase)obj).getDateStart().toString());
+		  stmt2.setString(4, ((Purchase)obj).getDateEnd().toString());
+		  stmt2.executeUpdate();
+		  stmt2 = con1.prepareStatement("INSERT INTO project.customer_city VALUES (?,?)");
+		  stmt2.setString(2, ((Purchase)obj).getCityname());
+		  stmt2.setString(1, ((Purchase)obj).getCustomerid());
+		  stmt2.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}//update the version of the selected city accordingly	
+		/*try {  //UPDATING THE DAILY REPORT -- 18.6 1:42 AM STILL NOT WORKING 
+			stmt3 = con1.prepareStatement("Select * dailyinfo Where CityName=?");
+		  stmt3.setString(1, ((Purchase)obj).getCityname());
+		  rs=stmt3.executeQuery();
+		  if(!rs.next())
+		  {
+			  stmt2 = con1.prepareStatement("INSERT INTO dailyinfo VALUES (?,?,?,?)");
+			  stmt2.setString(1, ((Purchase)obj).getCityname());  
+			  stmt2.setInt(2,1);  
+			  stmt2.setInt(2,0); 
+			  stmt2.setInt(2,1); 
+			  stmt3.executeUpdate();
+		  }
+		  else
+		  {
+			  stmt3 = con1.prepareStatement("Select NumOfSubscriptions From dailyinfo Where CityName=?");
+			  rs=stmt3.executeQuery();
+			  int i=rs.getInt(1);
+			  i=i+1;
+			  stmt3 = con1.prepareStatement("UPDATE dailyinfo SET NumOfSubscriptions = ? WHERE CityName = ?;");
+			  stmt3.setInt(1, i);  
+			  stmt3.setString(2, ((Purchase)obj).getCityname());
+			  stmt3.executeUpdate();
+		  }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}//update the version of the selected city accordingly*/	
+}
+private void AddOneTimePurchase(Object obj) { // ADDED 18.6 1:42 AM BY ANAN
+	PreparedStatement stmt2;
+	PreparedStatement stmt3;
+	try {
+		stmt2 = con1.prepareStatement("INSERT INTO project.customer_onetimebuy VALUES (?,?,?)");
+	  stmt2.setString(2, ((Purchase)obj).getCityname());
+	  stmt2.setString(1, ((Purchase)obj).getCustomerid());
+	  stmt2.setString(3, ((Purchase)obj).getOneTimeDate().toString());
+	  stmt2.executeUpdate();
+	  stmt2 = con1.prepareStatement("INSERT INTO project.customer_city VALUES (?,?)");
+	  stmt2.setString(2, ((Purchase)obj).getCityname());
+	  stmt2.setString(1, ((Purchase)obj).getCustomerid());
+	  stmt2.executeUpdate();
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}//update the version of the selected city accordingly	
+	
+}
 	private void AddCity(Object obj) {
 
 
