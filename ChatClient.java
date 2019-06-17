@@ -159,6 +159,12 @@ public void handleMessageFromServer(Object obj)
 				((ArrayList<String>)obj).remove(0);
 				setMapsNames((ArrayList<String>)obj);
 			}
+			else if(((ArrayList<String>)obj).get(0).equals("NotRelatedMaps")) // newwwwwwwwwwwwwwwwwwww eyal
+			{
+				System.out.println(((ArrayList<String>)obj));
+				((ArrayList<String>)obj).remove(0);
+				setMapsNames((ArrayList<String>)obj);
+			}
 			else if(((ArrayList<String>)obj).get(0).equals("LoginAnswer"))
 			{
 				((ArrayList<String>)obj).remove(0);
@@ -232,6 +238,14 @@ public void handleMessageFromServer(Object obj)
         		toGetCities.add("SELECT CityName FROM project.city;");//the query to be executed in the next method 
         		sendToServer(toGetCities);
         	}
+	else if(message.equals("GetNotRelatedMaps"))//////////////// newwwwwwwwwwwww eyal
+    	{
+    		ArrayList<String> toGetMapsNotRelated=new ArrayList<String>();
+    		toGetMapsNotRelated.add("GetNotRelatedMaps"); //fill the first slot with the job name for the next method to work right
+    		toGetMapsNotRelated.add("SELECT Name FROM project.map WHERE city_name IS NULL;"); //the query to be executed in the next method 
+    
+    		sendToServer(toGetMapsNotRelated);
+    	}
     	
     }
     catch(IOException e)
