@@ -166,6 +166,15 @@ public class EchoServer extends AbstractServer
 			}
 
 		}
+		else if(((ArrayList<String>)obj).get(0).equals("GetNotRelatedMaps"))  // newwwwwwwwwwwwww eyal
+		{
+				try {
+					GetNotRelatedMaps(obj,client);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
 
 
 	}
@@ -505,6 +514,23 @@ public class EchoServer extends AbstractServer
 			e.printStackTrace();
 		}
 
+	}
+	private void GetNotRelatedMaps(Object obj,ConnectionToClient client) throws IOException{ // newwwwwwwwwwwwwwwww eyal
+		try {
+
+			stmt= con1.createStatement();
+			rs = stmt.executeQuery(((ArrayList<String>)obj).get(1));//executed the required query
+			ArrayList<String> NotRelatedMaps=new ArrayList<String>();
+			NotRelatedMaps.add("NotRelatedMaps");//return the job name so we continue working right
+			while(rs.next()) {
+				NotRelatedMaps.add(rs.getString(1));
+			}
+
+			client.sendToClient(NotRelatedMaps);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	
