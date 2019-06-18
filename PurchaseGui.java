@@ -170,7 +170,7 @@ public class PurchaseGui  {
 		Optional<ButtonType> result=alert.showAndWait();
 		if(result.get() == ButtonType.OK)
 		{
-    	if((OneTimeRad.isDisabled()))
+    	if((!(OneTimeRad.isSelected())))
     	{
     		Purchase purchase = new Purchase();
     		purchase.setCityname((String)ComboBoxCity.getSelectionModel().getSelectedItem());
