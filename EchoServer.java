@@ -579,15 +579,18 @@ public class EchoServer extends AbstractServer
 		}//update the version of the selected city accordingly
 
 	}
-	  private void AddSubscription(Object obj) {// ADDED 18.6 1:42 AM BY ANAN
+		  private void AddSubscription(Object obj) { //ADDED BY ANAN 18.6
 		PreparedStatement stmt2;
 		PreparedStatement stmt3;
+		String formattedStartDate = ((Purchase)obj).getDateStart().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT));
+		String formattedEndDate = ((Purchase)obj).getDateEnd().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT));
+        System.out.println(formattedEndDate + formattedStartDate);
 		try {
 			stmt2 = con1.prepareStatement("INSERT INTO project.customer_subscription VALUES (?,?,?,?)");
 		  stmt2.setString(2, ((Purchase)obj).getCityname());
 		  stmt2.setString(1, ((Purchase)obj).getCustomerid());
-		  stmt2.setString(3, ((Purchase)obj).getDateStart().toString());
-		  stmt2.setString(4, ((Purchase)obj).getDateEnd().toString());
+		  stmt2.setString(3, formattedStartDate);
+		  stmt2.setString(4, formattedEndDate);
 		  stmt2.executeUpdate();
 		  stmt2 = con1.prepareStatement("INSERT INTO project.customer_city VALUES (?,?)");
 		  stmt2.setString(2, ((Purchase)obj).getCityname());
@@ -626,14 +629,15 @@ public class EchoServer extends AbstractServer
 			e.printStackTrace();
 		}//update the version of the selected city accordingly*/	
 }
-private void AddOneTimePurchase(Object obj) { // ADDED 18.6 1:42 AM BY ANAN
+private void AddOneTimePurchase(Object obj) { //ADDED BY ANAN 18.6
 	PreparedStatement stmt2;
 	PreparedStatement stmt3;
+	String formattedDate = ((Purchase)obj).getOneTimeDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT));
 	try {
 		stmt2 = con1.prepareStatement("INSERT INTO project.customer_onetimebuy VALUES (?,?,?)");
 	  stmt2.setString(2, ((Purchase)obj).getCityname());
 	  stmt2.setString(1, ((Purchase)obj).getCustomerid());
-	  stmt2.setString(3, ((Purchase)obj).getOneTimeDate().toString());
+	  stmt2.setString(3, (formattedDate));
 	  stmt2.executeUpdate();
 	  stmt2 = con1.prepareStatement("INSERT INTO project.customer_city VALUES (?,?)");
 	  stmt2.setString(2, ((Purchase)obj).getCityname());
